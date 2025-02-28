@@ -1,8 +1,11 @@
 <template>
   <div id="app">
-    <hello-world #default="{ user, favorites }">
-      <p>Hello {{ user.name }}. I like {{ favorites[0] }}.</p>
-    </hello-world>
+    <HelloWorld #default="{user ,favorites}">
+      <p>{{ user.name }}</p>
+      <ul>
+        <li v-for="f in favorites" :key="f">{{ f }}</li>
+      </ul>
+    </HelloWorld>
   </div>
 </template>
 

@@ -51,121 +51,10 @@
             </li>
           </ul>
 
-          <!-- Login Form -->
-          <VeeForm v-if="paneType === PANES.LOGIN">
-            <!-- Email -->
-            <div class="mb-3">
-              <label class="inline-block mb-2">Email</label>
-              <VeeField
-                type="text"
-                name="name"
-                class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded"
-                placeholder="Enter Email"
-              />
-            </div>
-            <!-- Password -->
-            <div class="mb-3">
-              <label class="inline-block mb-2">Password</label>
-              <input
-                type="password"
-                class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded"
-                placeholder="Password"
-              />
-            </div>
-            <button
-              type="submit"
-              class="block w-full bg-purple-600 text-white py-1.5 px-3 rounded transition hover:bg-purple-700"
-            >
-              Submit
-            </button>
-          </VeeForm>
-          <!-- Registration Form -->
-          <VeeForm v-else-if="paneType === PANES.REGISTER"
-            :validation-schema="schema"
-          >
-            <!-- Name -->
-            <div class="mb-3">
-              <label class="inline-block mb-2">Name</label>
-              <VeeField
-                name="name"
-                type="text"
-                class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded"
-                placeholder="Enter Name"
-              />
-              <ErrorMessage name="name" class="text-red-600"></ErrorMessage>
-            </div>
-            <!-- Email -->
-            <div class="mb-3">
-              <label class="inline-block mb-2">Email</label>
-              <VeeField
-                name="email"
-                type="email"
-                class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded"
-                placeholder="Enter Email"
-              />
-              <ErrorMessage class="text-red-600" name="email"></ErrorMessage>
-            </div>
-            <!-- Age -->
-            <div class="mb-3">
-              <label class="inline-block mb-2">Age</label>
-              <VeeField
-                type="number"
-                name="age"
-                class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded"
-                placeholder="Enter Age"
-              />
-              <ErrorMessage class="text-red-600" name="age"></ErrorMessage>
-            </div>
-            <!-- Password -->
-            <div class="mb-3">
-              <label class="inline-block mb-2">Password</label>
-              <VeeField
-                name="password"
-                type="password"
-                class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded"
-                placeholder="Password"
-              />
-              <ErrorMessage class="text-red-600" name="password"></ErrorMessage>
-            </div>
-            <!-- Confirm Password -->
-            <div class="mb-3">
-              <label class="inline-block mb-2">Confirm Password</label>
-              <VeeField
-                name="confirm_password"
-                type="password"
-                class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded"
-                placeholder="Confirm Password"
-              />
-              <ErrorMessage class="text-red-600" name="confirm_password"></ErrorMessage>
-            </div>
-            <!-- Country -->
-            <div class="mb-3">
-              <label class="inline-block mb-2">Country</label>
-              <VeeField 
-                as="select"
-                name="country"
-                class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded"
-              >
-                <option value="USA">USA</option>
-                <option value="Mexico">Mexico</option>
-                <option value="Germany">Germany</option>
-                <option value="Antarctica">Antarctica</option>
-              </VeeField>
-              <ErrorMessage class="text-red-600" name="country"></ErrorMessage>
-            </div>
-            <!-- TOS -->
-            <div class="mb-3 pl-6">
-              <VeeField as="input" type="checkbox" name="tos" value="1" class="w-4 h-4 float-left -ml-6 mt-1 rounded" />
-              <ErrorMessage class="text-red-600" name="tos"></ErrorMessage>
-              <label class="inline-block">Accept terms of service</label>
-            </div>
-            <button
-              type="submit"
-              class="block w-full bg-purple-600 text-white py-1.5 px-3 rounded transition hover:bg-purple-700"
-            >
-              Submit
-            </button>
-          </VeeForm>
+          <LoginForm v-if="paneType === PANES.LOGIN"></LoginForm>
+          <RegisterForm v-else-if="paneType === PANES.REGISTER"></RegisterForm>
+
+ 
         </div>
       </div>
     </div>
@@ -174,26 +63,23 @@
 <script>
 import useModal from '../stores/modal'
 import { mapState, mapWritableState } from 'pinia'
+
+import RegisterForm from './RegisterForm.vue';
+import LoginForm from './LoginForm.vue';
 const PANES = {
   LOGIN: 'Login',
   REGISTER: 'Register'
 }
 export default {
   name: 'AppAuth',
+  components: {
+    RegisterForm,
+    LoginForm,
+  },
   data() {
     return {
-      // TODO paneType
       PANES,
       paneType: PANES.LOGIN,
-      schema: {
-        name: 'required|min:4|max:100|alpha_spaces',
-        email: 'required|min:3|max:100|email',
-        age: 'required|min_value:18|max_value:100',
-        password:'required|min:3|max:100',
-        confirm_password: 'confirmed:@password',
-        country: 'required|not_one_of:Antarctica',
-        tos: 'required'
-      }
     }
   },
   computed: {

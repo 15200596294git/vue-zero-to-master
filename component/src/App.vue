@@ -1,6 +1,8 @@
 <script>
 import Greeting from '../components/Greeting.vue'
 import User from '../components/User.vue'
+import gsap from 'gsap';
+
 export default {
   name: 'App',
   components: {
@@ -16,6 +18,28 @@ export default {
   methods: {
     ageChange() {
       this.age++
+    },
+    onEnter(el, done) {
+      gsap.fromTo(el, 
+      {
+        opacity: 0,
+        translateX: 200,
+      }, {
+        opacity: 1,
+        translateX: 0,
+        onComplete() {
+          done()
+        }
+      })
+    },
+    onLeave(el, done) {
+      gsap.to(el, {
+        opacity: 0,
+        translateX: 200,
+        onComplete() {
+          done()
+        }
+      })
     }
   }
 }
@@ -40,17 +64,45 @@ export default {
      </div> -->
 
     <!-- 为嵌套元素设置过渡 -->
-    <transition name="nested" :duration="500">
-      <div v-if="flag">
-        <p class="inner1 animate__animated">other</p>
+    <!-- <transition name="nested" :duration="800">
+      <div style="display: flex; flex-direction: column;align-items: start; margin-top: 200px;overflow: hidden;" v-if="flag">
+        <p class="inner1">other</p>
         <p class="inner2">Hello World!</p>
       </div>
-    </transition> 
+    </transition>  -->
+
+    <!-- 使用js -->
+    <Transition @enter="onEnter" @leave="onLeave">
+      <div style="margin-top: 40px;" v-if="flag">Hello World!</div>
+    </Transition>
+
   </div>
 </template>
 
+<style>
+body {
+  overflow-x: hidden;
+}
+</style>
+
 <style scoped>
 /* 嵌套 */
+.nested-enter-active {
+  position: relative;
+}
+.nested-enter-active .inner1 {
+  animation: bounceInDown .5s backwards;
+}
+.nested-leave-active .inner1 {
+  animation: bounceOutDown .5s .3s forwards;
+}
+
+.nested-enter-active .inner2 {
+  animation: bounceInRight .5s .3s backwards;
+}
+.nested-leave-active .inner2 {
+  animation: bounceOutRight .5s forwards;
+}
 
 
 

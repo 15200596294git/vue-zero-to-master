@@ -19,10 +19,29 @@ export default {
       list: [4,2,5],
 
       list2: [2,5,46,7,4,8,1,56,42],
-      isAnimating: false
+      isAnimating: false,
+
+      flag4:true,
     }
   },
   methods: {
+    onEnter4(el, done) {
+      const animation = el.animate([{ opacity: 0, transform: 'translateX(30px)' }, { }], {
+        duration: 300
+      })
+      animation.onfinish = ()=> {
+        done()
+      }
+    },
+    onLeave4(el, done) {
+      const animation = el.animate([{ }, { opacity: 0, transform: 'translateX(30px)' }], {
+        duration: 300
+      })
+      animation.onfinish = ()=> {
+        done()
+      }
+    },
+
     onBeforeEnter3(el) {
       el.style.opacity = 0
       el.style.height = 0
@@ -176,6 +195,13 @@ export default {
     <TransitionGroup tag="ul" appear @before-enter="onBeforeEnter3" @enter="onEnter3" @leave="onLeave3">
       <li v-for="(item, i) in list2" :key="item" :data-index="i">{{ item }}</li>
     </TransitionGroup>
+
+    <!-- element.animate API -->
+    <button @click="flag4 = !flag4">toggoe</button>
+    <Transition @enter="onEnter4" @leave="onLeave4">
+      <p v-if="flag4">Hello World!</p>
+    </Transition>
+
 
   </div>
 </template>

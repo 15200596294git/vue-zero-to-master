@@ -89,20 +89,22 @@ export default {
         }
       ]
     }
+  },
+  methods: {
+    questionAnswered() {
+      this.questionsAnswered ++
+    }
   }
 }
 
 </script>
 
 <template>
-  <div>
-    <TodoApp/>
-  </div>
-  <!-- <div class="ctr">
-    <Questions v-if="questionsAnswered < questions.length" />
+  <div class="ctr">
+    <Questions :questions="questions" :questions-answered="questionsAnswered" v-if="questionsAnswered < questions.length" @question-answered="questionAnswered" />
     <Result v-else/>
     <button type="button" class="reset-btn">Reset</button>
-  </div> -->
+  </div>
 </template>
 
 <style scoped></style>
